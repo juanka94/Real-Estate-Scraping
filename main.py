@@ -1,15 +1,15 @@
 import requests
 import json
 import pandas as pd
-from bs4 import BeautifulSoup
 
-DOMAIN = 'https://www.casasyterrenos.com'
-URL = '/buscar/jalisco/zapopan/casas-y-departamentos/renta?page=1'
-HEADERS = {
-        'Accept': '*/*',
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0 '
-    }
+from bs4 import BeautifulSoup
+from config import Config
+
 LAYERS_TO_UNWRAP = [0, 'props', 'pageProps', 'initialState', 'propertyData', 'properties']
+
+domain = Config.DOMAIN
+url_page = Config.URL_PAGE
+headers = Config.HEADERS
 
 properties_columns = ['Name', 'Price', 'Room', 'Bathroom', 'Parking Lots', 'Description', 'Area']
 properties_dic = {
@@ -31,12 +31,12 @@ def unwrap_json(objson: dict, layers: list):
 
 if __name__ == '__main__':
     session = requests.session()
-    response = session.get(DOMAIN + URL, headers=HEADERS)
+    response = session.get(domain + url_page, headers=headers)
 
     if response.status_code == 200:
         content = response.text
 
-        page_name = URL.split('/')[-1]
+        page_name = url_page.split('/')[-1]
 
         #with open(f'assets/templates/{page_name}.text', 'w+') as file:
         #    file.write(content)
@@ -51,7 +51,7 @@ if __name__ == '__main__':
         
         for property in properties:
             url_property = property['canonical']
-            response_property = session.get(DOMAIN + url_property, headers=HEADERS)
+            response_property = session.get(domain + url_property, headers=headers)
             
             if response_property.status_code == 200:
                 content = response_property.text
