@@ -4,6 +4,7 @@ import pandas as pd
 
 from bs4 import BeautifulSoup
 from config import Config
+from helpers import unwrap_json
 
 LAYERS_TO_UNWRAP = [0, 'props', 'pageProps', 'initialState', 'propertyData', 'properties']
 
@@ -23,11 +24,6 @@ properties_dic = {
     'Area': []
 }
 bandera_chigona = 0
-
-def unwrap_json(objson: dict, layers: list):
-    new_json = objson[layers[0]] #Unwrap the original JSON
-    layers.pop(0) #Delete the first Layer
-    return new_json if not layers else unwrap_json(new_json, layers) #If there aren´t layers return JSON else keep unwrapping
 
 if __name__ == '__main__':
     session = requests.session()
