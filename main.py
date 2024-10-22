@@ -1,5 +1,3 @@
-import pandas as pd
-
 from config import Config
 from scraping import ScrapingPage, ScrapingProperty
 from helpers import convert_to_csv
