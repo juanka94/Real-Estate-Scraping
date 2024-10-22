@@ -17,8 +17,4 @@ def convert_to_csv(properties_dic):
     """Convert a dictionary to a csv file"""
     df = pd.DataFrame(properties_dic, columns=properties_columns)
 
-    print("Original DataFrame:")
-    print(df)
-    print('Data from properties.csv:')
-
     df.to_csv('assets/properties.csv', header=True)    
