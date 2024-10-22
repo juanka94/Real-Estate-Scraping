@@ -3,6 +3,7 @@ import pandas as pd
 from config import Config
 from scraping import ScrapingPage, ScrapingProperty
 from helpers import convert_to_csv
+from threading import Thread
 
 domain = Config.DOMAIN
 base_url_page = Config.URL_PAGE
@@ -19,6 +20,16 @@ properties_dic = {
     'Description': [],
     'Area': []
 }
+threads = []
+
+def get_property_items(url):
+    property_url = domain + url
+
+    scraping_property = ScrapingProperty(property_url)
+    items_property = scraping_property.get_items()
+
+    for (item, column) in zip(items_property, properties_columns):
+        properties_dic[column].append(item)
 
 if __name__ == '__main__':
 
@@ -28,12 +39,12 @@ if __name__ == '__main__':
     url_properties = scraping_page.get_properties()
 
     for url_property in url_properties:
-        property_url = domain + url_property
+        t = Thread(target=get_property_items(url_property))
+        t.start()
 
-        scraping_property = ScrapingProperty(property_url)
-        items_property = scraping_property.get_items()
+        threads.append(t)
 
-        for (item, column) in zip(items_property, properties_columns):
-            properties_dic[column].append(item)
+    for t in threads:
+        t.join()
 
     convert_to_csv(properties_dic)
