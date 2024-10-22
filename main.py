@@ -4,13 +4,14 @@ import pandas as pd
 
 from bs4 import BeautifulSoup
 from config import Config
-from helpers import unwrap_json
+#from helpers import unwrap_json
+from scraping import ScrapingPage, ScrapingProperty
 
-LAYERS_TO_UNWRAP = [0, 'props', 'pageProps', 'initialState', 'propertyData', 'properties']
+#LAYERS_TO_UNWRAP = [0, 'props', 'pageProps', 'initialState', 'propertyData', 'properties']
 
 domain = Config.DOMAIN
 url_page = Config.URL_PAGE
-headers = Config.HEADERS
+#headers = Config.HEADERS
 
 properties_columns = ['Name', 'Price', 'Room', 'Bathroom', 'Parking Lots', 'Description', 'Area']
 properties_dic = {
@@ -26,6 +27,17 @@ properties_dic = {
 bandera_chigona = 0
 
 if __name__ == '__main__':
+
+    scraping_page = ScrapingPage(domain+url_page)
+    url_properties = scraping_page.get_properties()
+
+    scraping_property = ScrapingProperty(domain+url_properties[0])
+    properties_dic = scraping_property.get_items()
+
+    print(properties_dic)
+    
+
+def main():
     session = requests.session()
     response = session.get(domain + url_page, headers=headers)
 
