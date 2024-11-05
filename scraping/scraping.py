@@ -1,16 +1,24 @@
-#File with the scraping class
+# File with the scraping class
 
 import requests
-import functools
 import json
 
 from config import Config
 from bs4 import BeautifulSoup
 from helpers import unwrap_json
 
-LAYERS_TO_UNWRAP = [0, 'props', 'pageProps', 'initialState', 'propertyData', 'properties']
+
+LAYERS_TO_UNWRAP = [
+    0,
+    'props',
+    'pageProps',
+    'initialState',
+    'propertyData',
+    'properties'
+    ]
 
 headers = Config.HEADERS
+
 
 class Scraping:
     def __init__(self, url):
@@ -20,11 +28,9 @@ class Scraping:
 
     def _get_response(self):
         return self._response_code
-    
-    
+
     def _get_content(self):
         return self._content
-    
 
     def _get_web(self):
         session = requests.session()
@@ -40,14 +46,12 @@ class Scraping:
             print(f'No se logro acceder al sitio! Respuesta del Server:{response.status_code}')
 
         return self._content
-    
 
 
 class ScrapingPage(Scraping):
     def __init__(self, url):
         self.url = url
         self._get_web()
-
 
     def get_properties(self):
         __url_properties = {}
@@ -62,13 +66,11 @@ class ScrapingPage(Scraping):
         return __url_properties
 
 
-
 class ScrapingProperty(Scraping):
     def __init__(self, url):
         self.url = url
         self._soup = 0
         self._get_web()
-
 
     def get_items(self):
         __property_items = []
@@ -89,52 +91,42 @@ class ScrapingProperty(Scraping):
 
         return __property_items
 
-
-
     def _get_name(self):
         __name = self._soup.find('h1', class_='font-bold text-gray-700 capitalize text-lg md:text-xl')
-        
-        return __name.text if __name else ""
 
+        return __name.text if __name else ""
 
     def _get_price(self):
         __price = self._soup.find('p', class_='text-2xl m-0')
 
         return __price.text if __price else ""
 
-
     def _get_room(self):
         __room = self._soup.find('img', src='/static/img/property_description/rooms.svg')
 
         return __room.next_sibling.text if __room else ""
 
-
     def _get_bathroom(self):
         __bathroom = self._soup.find('img', src='/static/img/property_description/bathrooms.svg')
 
         return __bathroom.next_sibling.text if __bathroom else ""
-    
 
     def _get_toilet(self):
         __toilet = self._soup.find('img', src='/static/img/property_description/halfBathrooms.svg')
 
         return __toilet.next_sibling.text if __toilet else ""
 
-
     def _get_parking_lot(self):
         __parcking_lot = self._soup.find('img', src='/static/img/property_description/parking_lots.svg')
 
-        return  __parcking_lot.next_sibling.text if  __parcking_lot else ""
-
+        return __parcking_lot.next_sibling.text if __parcking_lot else ""
 
     def _get_description(self):
         __description = self._soup.find('div', class_='prose max-w-screen-md')
 
         return [element.text for element in __description.children] if __description else ""
 
-
     def _get_area(self):
         __area = self._soup.find('p', class_='mb-0')
 
         return __area.text if __area else ""
-    

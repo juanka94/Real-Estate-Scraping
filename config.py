@@ -1,4 +1,4 @@
-#File with all the Config variables
+# File with all the Config variables
 
 class Config:
 

@@ -20,6 +20,7 @@ properties_dic = {
 }
 threads = []
 
+
 def get_property_items(url):
     property_url = domain + url
 
@@ -28,6 +29,7 @@ def get_property_items(url):
 
     for (item, column) in zip(items_property, properties_columns):
         properties_dic[column].append(item)
+
 
 if __name__ == '__main__':
 
