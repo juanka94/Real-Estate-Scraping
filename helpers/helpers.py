@@ -8,7 +8,15 @@ properties_columns = Config.PROPIERTIES_COLUMNS
 
 
 def unwrap_json(objson: dict, layers: list):
-    """Return an unwrap json"""
+    """Remove the layers of a nested JSON.
+
+    Args:
+        objson (dict): Nested JSON
+        layers (list): Layers to remove
+
+    Returns:
+        dict: Unnested
+    """
     new_json = objson[layers[0]]  # Unwrap the original JSON
     layers.pop(0)  # Delete the first Layer
     # If there aren´t layers return JSON else keep unwrapping
