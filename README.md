@@ -26,7 +26,7 @@ With this tool, we can obtain:
 1. Clone this repo on your computer (`git clone https://github.com/juanka94/Real-Estate-Scraping.git`).
 2. Install the packages from requirements.txt (`pip install -r requirements.txt`).
 3. Execute main.py (`python3 main.py`).
-4. Voilà!! You can find the properties.csv inside the assets folder.
+4. Voilà!! You will find the properties.csv inside the assets folder.
 
 ## Next Features.
 
